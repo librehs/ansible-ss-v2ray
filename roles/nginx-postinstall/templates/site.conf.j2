@@ -1,0 +1,73 @@
+# Default server configuration
+#
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
+
+        root /var/www/html;
+        index index.html;
+
+        server_name _;
+
+        ssl_certificate /home/ubuntu/certs/fake.crt;
+        ssl_certificate_key /home/ubuntu/certs/fake.key;
+        return 444;
+}
+
+server {
+        root /var/www/html;
+
+        index index.html index.htm;
+        server_name {{ansible_ssh_host}};
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+
+        listen [::]:443 ssl ipv6only=on;
+        listen 443 ssl http2 backlog=1024 so_keepalive=120s:60s:10;
+        ssl_certificate /home/ubuntu/certs/fullchain.cer;
+        ssl_certificate_key /home/ubuntu/certs/key.pem;
+
+        add_header      X-Frame-Options         DENY;
+        add_header      X-XSS-Protection        "1; mode=block";
+        add_header      X-Content-Type-Options  nosniff;
+    
+        location /{{v2_ws_path}} {
+                access_log off;
+                proxy_http_version      1.1;
+                proxy_set_header        Upgrade $http_upgrade;
+                proxy_set_header        Connection $connection_upgrade;
+                proxy_set_header        Host $http_host;
+
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+                sendfile                on;
+                tcp_nopush              on;
+                tcp_nodelay             on;
+                keepalive_requests      25600;
+                keepalive_timeout       300 300;
+                proxy_buffering         off;
+                proxy_buffer_size       8k;
+
+                proxy_intercept_errors on;
+                error_page 400 = https://wtfismyip.com;
+                if ($http_host = "{{ansible_ssh_host}}" ) {
+                        proxy_pass      http://v2ray;
+        }
+    }
+}
+
+upstream v2ray {
+        server          127.0.0.1:{{v2_local_port}};
+        keepalive       2176;
+}
+
+map $http_upgrade $connection_upgrade {
+        default         upgrade;
+        ''              close;
+}

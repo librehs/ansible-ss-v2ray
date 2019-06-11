@@ -1,0 +1,13 @@
+- name: Restart shadowsocks-libev
+  systemd:
+    name: shadowsocks-libev
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: Start haveged
+  systemd:
+    name: haveged
+    state: started
+    enabled: yes
+    daemon_reload: yes

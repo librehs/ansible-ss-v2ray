@@ -1,0 +1,14 @@
+- name: Install v2ray
+  shell: "bash <(curl -L -s https://install.direct/go.sh)"
+  args:
+    executable: /bin/bash
+  become: on
+  become_user: root
+
+- name: Deploy v2ray config file
+  template:
+    src: config.json.j2
+    dest: /etc/v2ray/config.json
+    mode: 0744
+  notify:
+      - Restart v2ray

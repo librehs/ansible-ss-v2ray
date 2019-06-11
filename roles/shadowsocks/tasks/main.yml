@@ -1,0 +1,19 @@
+- name: Install shadowsocks-libev
+  apt:
+      name: shadowsocks-libev
+      state: latest
+
+- name: Install haveged
+  apt:
+      name: haveged
+      state: latest
+  notify:
+    - Start haveged
+
+- name: Deploy shadowsocks config file
+  template:
+    src: config.json.j2
+    dest: /etc/shadowsocks-libev/config.json
+    mode: 0744
+  notify:
+      - Restart shadowsocks-libev

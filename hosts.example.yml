@@ -1,0 +1,14 @@
+all:
+  hosts:
+    test:
+      ansible_ssh_host: "examp.le"
+      ansible_ssh_private_key_file: "ssh.pem"
+      ansible_user: ubuntu
+      ss_password: "youbet"
+      ss_server_port: 8883
+      ss_method: "chacha20-ietf-poly1305"
+      v2_ws_path: "wtfismyip"
+      v2_id: "deadbeef-dead-beef-deba-deadbeefbeef"
+      v2_local_port: 9999
+      v2_alterid: 64
+      acme_sh_account_email: ""

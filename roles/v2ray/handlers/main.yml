@@ -1,0 +1,6 @@
+- name: Restart v2ray
+  systemd:
+    name: v2ray
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

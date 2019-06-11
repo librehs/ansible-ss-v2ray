@@ -1,0 +1,14 @@
+- name: Generate fake certificate
+  command: openssl req -x509 -newkey rsa:4096 -keyout fake.key -out fake.crt -days 365 -subj "/C=US/ST=Oregon/L=Portland/O=Fence UX/OU=Org/CN=fence.ux" -nodes
+  become: yes
+  become_user: ubuntu
+  args:
+    chdir: /home/ubuntu/certs
+
+- name: Deploy nginx config file
+  template:
+    src: site.conf.j2
+    dest: /etc/nginx/sites-enabled/default
+    mode: 0744
+  notify:
+      - Restart nginx

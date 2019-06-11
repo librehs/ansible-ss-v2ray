@@ -1,0 +1,13 @@
+---
+- name: Deploy shadowsocks and v2ray
+  hosts: all
+  remote_user: root
+  become: yes
+  become_method: sudo
+
+  roles:
+    - nginx-install
+    - acmesh
+    - shadowsocks
+    - v2ray
+    - nginx-postinstall

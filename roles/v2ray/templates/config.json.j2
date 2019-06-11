@@ -1,0 +1,35 @@
+{
+  "log": {
+    "loglevel": "error"
+  },
+  "inbounds": [
+    {
+      "port": {{v2_local_port}},
+      "listen": "127.0.0.1",
+      "tag": "ws-in",
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "{{v2_id}}",
+            "alterId": {{v2_alterid}}
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/{{v2_ws_path}}",
+          "headers": {}
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct"
+    }
+  ]
+}

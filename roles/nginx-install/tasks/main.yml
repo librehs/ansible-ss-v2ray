@@ -1,0 +1,9 @@
+- name: Add Sury's NGINX PPA
+  apt_repository:
+    repo: ppa:ondrej/nginx-mainline
+    state: present
+
+- name: Install NGINX
+  apt:
+      name: nginx
+      state: present

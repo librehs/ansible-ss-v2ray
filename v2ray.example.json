@@ -1,0 +1,51 @@
+
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "port": 1080,
+      "listen": "0.0.0.0",
+      "tag": "socks-in",
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "examp.le",
+            "port": 443,
+            "users": [
+              {
+                "id": "deadbeef-dead-beef-deba-deadbeefbeef",
+                "alterId": 64
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "wsSettings": {
+          "path": "/wtfismyip"
+        }
+      },
+      "tag": "agentWs"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
+    }
+  ]
+}
+
