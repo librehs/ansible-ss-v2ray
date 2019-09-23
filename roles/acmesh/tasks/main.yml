@@ -43,7 +43,7 @@
 
 - name: Issue acme.sh certificate(s)
   command: >-
-    ./acme.sh --issue -d {{ ansible_ssh_host }}
+    ./acme.sh --issue -d {{ hostname }}
     --standalone
     --cert-file "/home/ubuntu/certs/cert.cer"
     --key-file "/home/ubuntu/certs/key.pem"

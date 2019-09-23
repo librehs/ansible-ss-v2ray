@@ -21,7 +21,7 @@ server {
         root /var/www/html;
 
         index index.html index.htm;
-        server_name {{ansible_ssh_host}};
+        server_name {{hostname}};
 
         location / {
             try_files $uri $uri/ =404;
@@ -55,8 +55,8 @@ server {
                 proxy_buffer_size       8k;
 
                 proxy_intercept_errors on;
-                error_page 400 = https://wtfismyip.com;
-                if ($http_host = "{{ansible_ssh_host}}" ) {
+                error_page 400 = {{error_redirect_site}};
+                if ($http_host = "{{hostname}}" ) {
                         proxy_pass      http://v2ray;
         }
     }

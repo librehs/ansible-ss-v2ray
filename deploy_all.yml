@@ -8,6 +8,7 @@
   roles:
     - nginx-install
     - acmesh
+    - optimize-sysctl
     - shadowsocks
     - v2ray
     - nginx-postinstall
